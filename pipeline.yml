@@ -1,5 +1,5 @@
 jobs:
-- name: run
+- name: run-cdcs
   plan:
   - get: git
     trigger: true
@@ -8,7 +8,9 @@ jobs:
   - across:
     - var: consumer
       values: ((.:consumers))
-    task: cdc-((.:consumer))
+      max_in_flight: all
+    fail_fast: true
+    task: ((.:consumer))
     config:
       platform: linux
       image_resource:
@@ -16,8 +18,8 @@ jobs:
         source:
           mirror_self: true
       run:
-        path: echo
-        args: ["((.:consumer))"]
+        path: sleep
+        args: ["60"]
 
 resources:
 - check_every: 10m
