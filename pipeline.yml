@@ -1,0 +1,14 @@
+jobs:
+- name: run
+  plan:
+  - get: git
+  - load_var: consumers
+    file: git/consumers.json
+
+resources:
+- check_every: 10m
+  name: git
+  source:
+    branch: main
+    uri: https://github.com/simonjohansson/concourse-across-test.git
+  type: git
